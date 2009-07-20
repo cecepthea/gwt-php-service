@@ -1,0 +1,11 @@
+<module>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="com.google.gwt.user.theme.standard.Standard" />
+	<entry-point class="test.client.Test" />
+	<inherits name="com.google.gwt.http.HTTP" />
+	<inherits name="com.gwtent.GwtEnt" />
+	<inherits name='com.google.gwt.validation.Validation' />
+	<inherits name="com.google.gwt.json.JSON"/> 
+	
+	
+</module>
