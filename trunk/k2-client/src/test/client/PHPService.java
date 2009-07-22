@@ -111,8 +111,7 @@ public class PHPService {
 		@Override
 		public void onResponseReceived(Request request,	Response response) {
 			if (200 == response.getStatusCode()) {
-				try {				
-					
+				try {
 					JSONValue jsonObj = JSONParser.parse(response.getText());
 					String answer = jsonObj.isObject().get("answer").isString().stringValue();
 					Window.alert(answer);
