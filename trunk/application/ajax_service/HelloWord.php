@@ -34,9 +34,10 @@ class HelloWord extends GWT_Service {
 
     public static function getFriend($id) {
         $myfriend = new Friend();
-        $myfriend->setName("Huỳng Tuyết Hồng");
+        $myfriend->setName("Huỳnh Tuyết Hồng");
         $myfriend->setPhoneNumber("8493849815");
         $myfriend->setBirthday("2/2/1983");
+        $myfriend->setAge(26);
         GWT_RPC::response($myfriend);
     }
 
