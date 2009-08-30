@@ -39,7 +39,7 @@
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array();
+$autoload['libraries'] = array('database', 'session', 'redux_auth', 'form_validation','email');
 
 
 /*
@@ -51,7 +51,7 @@ $autoload['libraries'] = array();
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array();
+$autoload['helper'] = array('url', 'form', 'html');
 
 
 /*
@@ -79,7 +79,7 @@ $autoload['plugin'] = array();
 |
 */
 
-$autoload['config'] = array();
+$autoload['config'] = array('redux_auth', 'email');
 
 
 /*
@@ -108,7 +108,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array();
+$autoload['model'] = array('redux_auth_model');
 
 
 
