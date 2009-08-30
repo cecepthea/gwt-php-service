@@ -39,7 +39,7 @@ class MainService extends Controller {
             }
         }
         try {
-            require_once 'system/application/ajax_service/'.$service_name.".php";
+            require_once 'application/ajax_service/'.$service_name.".php";
             $service = new ReflectionClass($service_name);
             $method = $service->getMethod($service_method);
 
@@ -50,7 +50,7 @@ class MainService extends Controller {
     }
 
     private function autoLoadModel() {
-        $classesDirectory = 'system/application/ajax_service/';
+        $classesDirectory = 'application/ajax_service/';
         $classesExtension = '.php';
         // require_once all classes in that directory
         $d = dir($classesDirectory);

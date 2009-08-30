@@ -12,14 +12,14 @@ and open the template in the editor.
         <script language="JavaScript" src="<?php echo base_url()?>js/jquery/jquery.form.js"></script>
         <script language="JavaScript" src="<?php echo base_url()?>js/jquery/jquery.json.js"></script>
 
-        
+      <!--  
         <script language="JavaScript" src="<?php echo base_url()?>gwt/test.Test/test.Test.nocache.js"></script>
-        
+        -->
 
     </head>
     <body>
 
-        <div style="display:none;">
+        <div style="display:block;">
             <h1>Test Ajax Service Form</h1>
             <form id="form_service"	action="<?php echo base_url()?>index.php/mainservice/handler/"	method="POST">
                 <input type="text" name="service_name" value="HelloWord" size="100" /> <br>

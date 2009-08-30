@@ -1,7 +1,7 @@
 <?php
-include_once "system/application/models/Friend.php";
-include_once 'system/application/ajax_service/GWT_Service.php';
-include_once 'system/application/ajax_service/GWT_RPC.php';
+include_once "application/models/Friend.php";
+include_once 'application/ajax_service/GWT_Service.php';
+include_once 'application/ajax_service/GWT_RPC.php';
 
 /* 
  * To change this template, choose Tools | Templates
