@@ -144,7 +144,13 @@ class Welcome extends Controller {
 
             $login = $this->redux_auth->login($email, $password);
 
-            redirect('welcome/status');
+            if($this->redux_auth->logged_in() == TRUE){
+               $url_redirect = $this->input->post('url_redirect');
+               redirect($url_redirect);
+            }
+            else {                 
+               redirect('welcome/login');
+            }
         }
     }
 
