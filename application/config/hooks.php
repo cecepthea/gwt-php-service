@@ -10,12 +10,21 @@
 |
 */
 $hook['post_controller_constructor'] = array(
-                                'class'    => 'UserPermissionHook',
+                                'class'    => 'ApplicationHook',
                                 'function' => 'checkRole',
-                                'filename' => 'UserPermissionHook.php',
+                                'filename' => 'ApplicationHook.php',
                                 'filepath' => 'hooks',
                                 'params'   => array()
                                 );
+
+$hook['display_override'] = array(
+                                'class'    => 'ApplicationHook',
+                                'function' => 'decoratePage',
+                                'filename' => 'ApplicationHook.php',
+                                'filepath' => 'hooks',
+                                'params'   => array()
+                                );
+
 
 
 /* End of file hooks.php */

@@ -39,7 +39,7 @@
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'session', 'redux_auth', 'form_validation','email');
+$autoload['libraries'] = array('database', 'session', 'redux_auth', 'form_validation','email','page_decorator');
 
 
 /*
