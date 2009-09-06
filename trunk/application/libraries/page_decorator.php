@@ -33,7 +33,7 @@ class page_decorator {
     }
 
     public function setPageTitle($pageTitle) {
-        $this->pageTitle = $pageTitle;
+        $this->pageTitle = trim($pageTitle);
     }
 
 }

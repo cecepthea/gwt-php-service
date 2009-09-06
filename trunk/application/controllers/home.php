@@ -13,16 +13,15 @@ class home extends Controller {
     }
 
      /**
-      * @Secured
       * @Decorated
       */
     public function index() {
         $this->page_decorator->setPageMetaTag("description", "Home page");
         $this->page_decorator->setPageMetaTag("keywords", "Home page");
         $this->page_decorator->setPageMetaTag("author", "Trieu Nguyen");
-        $this->page_decorator->setPageTitle("Home page DRD");
+        $this->page_decorator->setPageTitle("Job Management System at DRD");
 
-        $data = array("test2" => true);
+        $data = array();
         $this->load->view("decorator/body",$data);
     }
 }
