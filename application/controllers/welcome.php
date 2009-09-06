@@ -162,7 +162,7 @@ class Welcome extends Controller {
      **/
     function logout() {
         $this->redux_auth->logout();
-        redirect('welcome/status');
+        redirect('home');
     }
 
     /**
