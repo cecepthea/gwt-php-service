@@ -4,7 +4,7 @@ require_once 'annotations/annotations.php';
 require_once 'annotations/Secured.php';
 require_once 'annotations/Decorated.php';
 
-require_once 'application/controllers/Search.php';
+
 
 /**
  * My hook for application, do check role and decorate page using Annotations
@@ -93,21 +93,21 @@ class ApplicationHook {
                 $this->reflectedController = new ReflectionAnnotatedMethod($this->controllerName,$this->controllerMethod);
             } catch (ReflectionException $e) {
             //echo "Request to function does not exist";
+                return NULL;
             }
         }
         return $this->reflectedController;
     }
 
-
-
-
     public function checkRole() {
         if($this->isValidControllerRequest() ) {
             $reflection = $this->getReflectedController();
-            if($this->CI->redux_auth->logged_in() == FALSE && $reflection->hasAnnotation('Secured')) {
-                $annotation = $reflection->getAnnotation('Secured');
-                //TODO
-                redirect($this->LOGIN_URI .$this->controllerRequest);
+            if($reflection !=NULL && $this->CI->redux_auth->logged_in() == FALSE) {
+                if($reflection->hasAnnotation('Secured')) {
+                    $annotation = $reflection->getAnnotation('Secured');
+                    //TODO
+                    redirect($this->LOGIN_URI .$this->controllerRequest);
+                }
             }
         }
     }
@@ -115,21 +115,23 @@ class ApplicationHook {
     public function decoratePage() {
         if($this->isValidControllerRequest()) {
             $reflection =  $this->getReflectedController();
-            if($reflection->hasAnnotation('Decorated')) {
-                $data = array(
-                    'page_title' => $this->CI->page_decorator->getPageTitle(),
-                    'meta_tags' => $this->CI->page_decorator->getPageMetaTags(),
-                    'page_header' => $this->decorateHeader(),
-                    'left_navigation' => $this->decorateLeftNavigation(),
-                    'page_content' => $this->decoratePageContent(),
-                    'page_footer' => $this->decorateFooter()
-                );
+            if($reflection !=NULL ) {
+                if($reflection->hasAnnotation('Decorated')) {
+                    $data = array(
+                        'page_title' => $this->CI->page_decorator->getPageTitle(),
+                        'meta_tags' => $this->CI->page_decorator->getPageMetaTags(),
+                        'page_header' => $this->decorateHeader(),
+                        'left_navigation' => $this->decorateLeftNavigation(),
+                        'page_content' => $this->decoratePageContent(),
+                        'page_footer' => $this->decorateFooter()
+                    );
 
-                //test response time for benchmarking
-                $data['page_respone_time'] =  $this->endAndGetResponseTime();
+                    //test response time for benchmarking
+                    $data['page_respone_time'] =  $this->endAndGetResponseTime();
 
-                echo trim( $this->CI->load->view("decorator/page_template",$data,TRUE) );
-                return;
+                    echo trim( $this->CI->load->view("decorator/page_template",$data,TRUE) );
+                    return;
+                }
             }
         }
         echo $this->CI->output->get_output();
