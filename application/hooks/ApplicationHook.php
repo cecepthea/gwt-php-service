@@ -92,7 +92,7 @@ class ApplicationHook {
             try {
                 $this->reflectedController = new ReflectionAnnotatedMethod($this->controllerName,$this->controllerMethod);
             } catch (ReflectionException $e) {
-            //echo "Request to function does not exist";
+                ApplicationHook::logError($this->controllerName.".".$this->controllerMethod." is NOT reflected!");
                 return NULL;
             }
         }
@@ -102,8 +102,11 @@ class ApplicationHook {
     public function checkRole() {
         if($this->isValidControllerRequest() ) {
             $reflection = $this->getReflectedController();
-            if($reflection !=NULL && $this->CI->redux_auth->logged_in() == FALSE) {
-                if($reflection->hasAnnotation('Secured')) {
+            if($reflection !=NULL ) {
+                if($reflection->hasAnnotation('Secured') && $this->CI->redux_auth->logged_in() == FALSE) {
+
+                    ApplicationHook::logInfo("-> CheckRole for ".$this->controllerName.".".$this->controllerMethod);
+
                     $annotation = $reflection->getAnnotation('Secured');
                     //TODO
                     redirect($this->LOGIN_URI .$this->controllerRequest);
@@ -117,6 +120,12 @@ class ApplicationHook {
             $reflection =  $this->getReflectedController();
             if($reflection !=NULL ) {
                 if($reflection->hasAnnotation('Decorated')) {
+
+                    ApplicationHook::logInfo("-> Decorate page for ".$this->controllerName.".".$this->controllerMethod);
+
+                    $this->CI->lang->load('fields','vietnamese');
+                    ApplicationHook::logInfo(lang('news_events'));
+
                     $data = array(
                         'page_title' => $this->CI->page_decorator->getPageTitle(),
                         'meta_tags' => $this->CI->page_decorator->getPageMetaTags(),
@@ -125,10 +134,9 @@ class ApplicationHook {
                         'page_content' => $this->decoratePageContent(),
                         'page_footer' => $this->decorateFooter()
                     );
-
+                    $data['controller'] = $this->controllerName."/".$this->controllerMethod;
                     //test response time for benchmarking
                     $data['page_respone_time'] =  $this->endAndGetResponseTime();
-
                     echo trim( $this->CI->load->view("decorator/page_template",$data,TRUE) );
                     return;
                 }
@@ -151,7 +159,12 @@ class ApplicationHook {
     }
 
     protected function decoratePageContent() {
-        return trim( $this->CI->output->get_output() );
+        $pagintor_view = "";
+        if($this->controllerName == "job_seeker" || $this->controllerName == "employer") {
+            $tem_data = array('controllerName'=>$this->controllerName);
+            $pagintor_view =  $this->CI->load->view("global_view/question_url",$tem_data,TRUE);
+        }
+        return trim( $this->CI->output->get_output() ).$pagintor_view;
     }
 
     protected function decorateFooter() {
@@ -165,6 +178,24 @@ class ApplicationHook {
     protected function endAndGetResponseTime() {
         $this->CI->benchmark->mark('code_end');
         return "<br><b>Rendering time: ".$this->CI->benchmark->elapsed_time('code_start', 'code_end')."</b><br>";
+    }
+
+    public static function logInfo($text) {
+        $ci = &get_instance();
+        $ci->load->library('firephp');
+        $ci->firephp->info("  ".$text);
+    }
+
+    public static function logError($text) {
+        $ci = &get_instance();
+        $ci->load->library('firephp');
+        $ci->firephp->error("  ".$text);
+    }
+
+    public static function log($text) {
+        $ci = &get_instance();
+        $ci->load->library('firephp');
+        $ci->firephp->log("".$text);
     }
 }
 ?>
