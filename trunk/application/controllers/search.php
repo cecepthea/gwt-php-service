@@ -1,9 +1,4 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 
 /**
  * Description of Search
@@ -34,9 +29,9 @@ class search extends Controller {
     }
 
 
-
-    public function test2() {
-        echo "test2";
+    /** @Decorated */
+    public function test_form() {
+        $this->load->view("form/simple_form",null);
     }
 
     /** @Decorated */
@@ -59,6 +54,10 @@ class search extends Controller {
         $this->page_decorator->setPageTitle("test_decorator2");
 
         $data = array("test2" => true);
+
+
+
+
         $this->load->view("decorator/body",$data);
     }
 }

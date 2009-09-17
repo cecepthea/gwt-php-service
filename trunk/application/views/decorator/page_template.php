@@ -61,6 +61,23 @@
             #content h2 { margin: 0 0 .5em 0; }
 
         </style>
+        <!--
+        <script type="text/javascript" charset="utf-8" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript" charset="utf-8">
+            // Load jQuery
+           // google.load("jquery", "1");
+           // google.load("jqueryui", "1");
+           // jQuery.noConflict();
+        </script>
+        -->
+<?php if($controller == "job_seeker/number_question"){ ?>
+       <link rel="stylesheet" href="http://localhost/k2/assets/css/js.css" type="text/css" />
+       <?php } ?>
+
+<?php if($controller == "employer/number_question") {?>
+       <link rel="stylesheet" href="http://localhost/k2/assets/css/emp.css" type="text/css" />
+       
+<?php } ?>
     </head>
     <body>
         <div id="container">
