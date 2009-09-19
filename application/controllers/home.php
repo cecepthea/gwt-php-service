@@ -24,7 +24,7 @@ class home extends Controller {
 
         $this->load->helper('random_password');
         $ran_pass = get_random_password(10, 12, TRUE, TRUE, FALSE);
-        ApplicationHook::logInfo($ran_pass);
+        //ApplicationHook::logInfo($ran_pass);
 
         $data = array();
         $this->load->view("decorator/body",$data);

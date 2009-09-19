@@ -58,9 +58,9 @@ class ApplicationHook {
             return  TRUE;
         }
 
-        $tokens = split("/index.php/", current_url());
+        $tokens = explode("/index.php/", current_url());
         if(sizeof($tokens)>=2 ) {
-            $routeTokens =  split("/", $tokens[1]);
+            $routeTokens =  explode("/", $tokens[1]);
             if(sizeof($routeTokens)>=2) {
                 $this->controllerName = $routeTokens[0];
                 $this->controllerMethod = $routeTokens[1];
@@ -182,19 +182,19 @@ class ApplicationHook {
 
     public static function logInfo($text) {
         $ci = &get_instance();
-        $ci->load->library('firephp');
+        $ci->load->library('FirePHP');
         $ci->firephp->info("  ".$text);
     }
 
     public static function logError($text) {
         $ci = &get_instance();
-        $ci->load->library('firephp');
+        $ci->load->library('FirePHP');
         $ci->firephp->error("  ".$text);
     }
 
     public static function log($text) {
         $ci = &get_instance();
-        $ci->load->library('firephp');
+        $ci->load->library('FirePHP');
         $ci->firephp->log("".$text);
     }
 }
