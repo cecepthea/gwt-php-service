@@ -26,6 +26,8 @@ class ApplicationHook {
     protected $controllerMethod = NULL;
     protected $reflectedController = NULL;
     public static $countMethodCall = 0;
+    public static $CONTROLLERS_FOLDER_PATH = "";
+    public static $controllers_map;
 
 
     private function initHook() {
@@ -49,11 +51,29 @@ class ApplicationHook {
         $this->initHook();
     }
 
+    public function buildControllersMap() {
+        $this->CI->load->helper('file');
+        $controllers = get_dir_file_info('application/controllers');
+        foreach ($controllers as $key => $controller) {
+            $tokens = explode("/controllers/", $controller["server_path"]);
+            if(ApplicationHook::$CONTROLLERS_FOLDER_PATH === ""){
+                ApplicationHook::$CONTROLLERS_FOLDER_PATH =$tokens[0]."/controllers/";
+                break;
+            }
+            break;
+//            if($this->EndsWith($tokens[1], ".php") && $this->EndsWith($key, ".php")) {
+//                $pattern = str_replace(".php", "",$tokens[1]);
+//                ApplicationHook::$controllers_map[$pattern] = str_replace(".php", "",$key);
+//            }
+        }
+    }
+
     /**
      *
      * @return boolean
      */
     protected  function isValidControllerRequest() {
+        $this->buildControllersMap();
         if($this->controllerName != NULL && $this->controllerMethod != NULL) {
             return  TRUE;
         }
@@ -61,11 +81,16 @@ class ApplicationHook {
         $tokens = explode("/index.php/", current_url());
         if(sizeof($tokens)>=2 ) {
             $routeTokens =  explode("/", $tokens[1]);
+
             if(sizeof($routeTokens)>=2) {
-                $this->controllerName = $routeTokens[0];
-                $this->controllerMethod = $routeTokens[1];
+                $c = 0;
+                while(is_dir(ApplicationHook::$CONTROLLERS_FOLDER_PATH.$routeTokens[$c])){
+                    $c++;
+                }
+                $this->controllerName = $routeTokens[$c];
+                $this->controllerMethod = $routeTokens[$c+1];
                 $this->controllerRequest = $tokens[1];
-                return  TRUE;
+                return TRUE;
             }
             else if(sizeof($routeTokens)===1 && strlen($routeTokens[0])>0 ) {
                     $this->controllerName = $routeTokens[0];

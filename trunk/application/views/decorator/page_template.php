@@ -7,6 +7,7 @@
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title><?php echo $page_title; ?></title>
+        <base href="http://192.168.150.129/k2/" />
 
         <style type="text/css" media="screen">
             #container
@@ -71,11 +72,11 @@
         </script>
         -->
 <?php if($controller == "job_seeker/number_question"){ ?>
-       <link rel="stylesheet" href="http://localhost/k2/assets/css/js.css" type="text/css" />
+       <link rel="stylesheet" href="<?php echo base_url();?>assets/css/js.css" type="text/css" />
        <?php } ?>
 
 <?php if($controller == "employer/number_question") {?>
-       <link rel="stylesheet" href="http://localhost/k2/assets/css/emp.css" type="text/css" />
+       <link rel="stylesheet" href="<?php echo base_url();?>assets/css/emp.css" type="text/css" />
        
 <?php } ?>
     </head>
