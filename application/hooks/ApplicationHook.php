@@ -4,12 +4,10 @@ require_once 'annotations/annotations.php';
 require_once 'annotations/Secured.php';
 require_once 'annotations/Decorated.php';
 
-
-
 /**
  * My hook for application, do check role and decorate page using Annotations
  *
- * @author Trieu Nguyen
+ * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
 class ApplicationHook {
 
@@ -51,29 +49,16 @@ class ApplicationHook {
         $this->initHook();
     }
 
-    public function buildControllersMap() {
-        $this->CI->load->helper('file');
-        $controllers = get_dir_file_info('application/controllers');
-        foreach ($controllers as $key => $controller) {
-            $tokens = explode("/controllers/", $controller["server_path"]);
-            if(ApplicationHook::$CONTROLLERS_FOLDER_PATH === ""){
-                ApplicationHook::$CONTROLLERS_FOLDER_PATH =$tokens[0]."/controllers/";
-                break;
-            }
-            break;
-//            if($this->EndsWith($tokens[1], ".php") && $this->EndsWith($key, ".php")) {
-//                $pattern = str_replace(".php", "",$tokens[1]);
-//                ApplicationHook::$controllers_map[$pattern] = str_replace(".php", "",$key);
-//            }
-        }
-    }
 
     /**
      *
      * @return boolean
      */
     protected  function isValidControllerRequest() {
-        $this->buildControllersMap();
+        if(ApplicationHook::$CONTROLLERS_FOLDER_PATH === "") {
+            ApplicationHook::$CONTROLLERS_FOLDER_PATH = $this->CI->config->item('controllers_directory');
+        }
+
         if($this->controllerName != NULL && $this->controllerMethod != NULL) {
             return  TRUE;
         }
@@ -83,8 +68,8 @@ class ApplicationHook {
             $routeTokens =  explode("/", $tokens[1]);
 
             if(sizeof($routeTokens)>=2) {
-                $c = 0;
-                while(is_dir(ApplicationHook::$CONTROLLERS_FOLDER_PATH.$routeTokens[$c])){
+                $c = 0;                
+                while(is_dir(ApplicationHook::$CONTROLLERS_FOLDER_PATH.$routeTokens[$c])) {
                     $c++;
                 }
                 $this->controllerName = $routeTokens[$c];
@@ -97,7 +82,7 @@ class ApplicationHook {
                     $this->controllerMethod = "index";
                     $this->controllerRequest = $tokens[1];
                     return  TRUE;
-                }
+            }
         }
         else if(strrpos(current_url(), "/index.php")>0) {
                 $this->controllerName = "home";
@@ -148,8 +133,7 @@ class ApplicationHook {
 
                     ApplicationHook::logInfo("-> Decorate page for ".$this->controllerName.".".$this->controllerMethod);
 
-                    $this->CI->lang->load('fields','vietnamese');
-                    ApplicationHook::logInfo(lang('news_events'));
+                    $this->CI->lang->load('fields','vietnamese');                    
 
                     $data = array(
                         'page_title' => $this->CI->page_decorator->getPageTitle(),

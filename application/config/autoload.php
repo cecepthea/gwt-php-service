@@ -79,7 +79,7 @@ $autoload['plugin'] = array();
 |
 */
 
-$autoload['config'] = array('redux_auth', 'email');
+$autoload['config'] = array('redux_auth', 'email','decorator');
 
 
 /*
