@@ -17,16 +17,6 @@ class admin_panel extends Controller {
      * @Decorated
      */
     public function index() {
-        $this->load->helper('file');
-
-        $arr = get_file_info("index.php");
-        ApplicationHook::log($arr["name"]);
-        foreach ($arr as $k => $v) {
-        
-        }
-
-        
-
         $data = array();
         $this->load->view("decorator/body",$data);
     }
