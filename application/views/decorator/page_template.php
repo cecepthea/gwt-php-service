@@ -6,8 +6,9 @@
         <?php endforeach;?>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="content-language" content="en" >
         <title><?php echo $page_title; ?></title>
-        <base href="http://192.168.150.129/k2/" />
+        <base href="<?php echo base_url()?>" />
 
         <style type="text/css" media="screen">
             #container
@@ -64,23 +65,29 @@
         </style>
         <!--
         <script type="text/javascript" charset="utf-8" src="http://www.google.com/jsapi"></script>
+         -->
+        <script language="JavaScript" src="<?php echo base_url()?>assets/js/jquery/jquery.js"></script>
         <script type="text/javascript" charset="utf-8">
             // Load jQuery
            // google.load("jquery", "1");
            // google.load("jqueryui", "1");
-           // jQuery.noConflict();
+           
+           var LanguageChooser = {};
+           LanguageChooser.setLanguageBySession = function(){
+               var lang_code = jQuery("head meta[http-equiv='content-language']").attr("content");
+           }
         </script>
-        -->
+       
 <?php if($controller == "job_seeker/number_question"){ ?>
        <link rel="stylesheet" href="<?php echo base_url();?>assets/css/js.css" type="text/css" />
-       <?php } ?>
+<?php } ?>
 
 <?php if($controller == "employer/number_question") {?>
-       <link rel="stylesheet" href="<?php echo base_url();?>assets/css/emp.css" type="text/css" />
-       
+       <link rel="stylesheet" href="<?php echo base_url();?>assets/css/emp.css" type="text/css" />       
 <?php } ?>
+
     </head>
-    <body>
+    <body onload="">
         <div id="container">
             <div id="top">
                 <?php echo $page_header; ?>
@@ -92,10 +99,11 @@
                 <?php echo $page_content; ?>
             </div>
             <div id="footer">
-                <?php echo $page_footer; ?>
+                <?= $page_footer; ?>
             </div>
             <div>
                 <?php echo $page_respone_time; ?>
+                <input id="session_id" type="hidden" name="" value=" <?=$session_id?>" />
             </div>
         </div>
     </body>

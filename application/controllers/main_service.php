@@ -4,7 +4,9 @@
  * @property CI_Input $input
  * @author Trieu Nguyen
  */
-class MainService extends Controller {
+class Main_Service extends Controller {
+    public static $controller_name = "main_service";
+
     private $dev_mode = false;
     function __construct() {
         parent::Controller();

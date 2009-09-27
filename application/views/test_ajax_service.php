@@ -1,16 +1,12 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Test Form</title>
 
-        <script language="JavaScript" src="<?php echo base_url()?>js/jquery/jquery.js"></script>
-        <script language="JavaScript" src="<?php echo base_url()?>js/jquery/jquery.form.js"></script>
-        <script language="JavaScript" src="<?php echo base_url()?>js/jquery/jquery.json.js"></script>
+        <script language="JavaScript" src="<?php echo base_url()?>assets/js/jquery/jquery.js"></script>
+        <script language="JavaScript" src="<?php echo base_url()?>assets/js/jquery/jquery.form.js"></script>
+        <script language="JavaScript" src="<?php echo base_url()?>assets/js/jquery/jquery.json.js"></script>
 
       <!--  
         <script language="JavaScript" src="<?php echo base_url()?>gwt/test.Test/test.Test.nocache.js"></script>
@@ -21,7 +17,7 @@ and open the template in the editor.
 
         <div style="display:block;">
             <h1>Test Ajax Service Form</h1>
-            <form id="form_service"	action="<?php echo base_url()?>index.php/mainservice/handler/"	method="POST">
+            <form id="form_service"	action="<?php echo base_url()?>index.php/main_service/handler/"	method="POST">
                 <input type="text" name="service_name" value="HelloWord" size="100" /> <br>
                 <input type="text" name="service_method" value="callWith1Param"	size="100" /> <br>
                 <input type="hidden" name="service_id" value="" size="100" />
@@ -39,7 +35,7 @@ and open the template in the editor.
                 alert(obj.answer);
             };
             RemoteService.callServer = function(){
-                jQuery.post("<?php echo base_url()?>index.php/mainservice/handler/",RemoteService.params,RemoteService.callback);
+                jQuery.post("<?php echo base_url()?>index.php/main_service/handler/",RemoteService.params,RemoteService.callback);
             };
 
 
@@ -62,12 +58,12 @@ and open the template in the editor.
                 var handler = function(responseText, statusText)  {
                     //var obj = jQuery.secureEvalJSON(responseText.trim());
                     alert(responseText);
-                     var obj = jQuery.secureEvalJSON(responseText.trim());
-                     console.log(obj);
-                     if(obj.answer != null){
-                        var answer = jQuery.secureEvalJSON(obj.answer);
-                        console.log(answer);
-                     }
+//                     var obj = jQuery.secureEvalJSON(responseText.trim());
+//                     console.log(obj);
+//                     if(obj.answer != null){
+//                        var answer = jQuery.secureEvalJSON(obj.answer);
+//                        console.log(answer);
+//                     }
                 }
             });
 
@@ -95,7 +91,7 @@ and open the template in the editor.
             };
 
             function testService(){
-                var url = "<?php echo base_url()?>index.php/mainservice/testCrossSite/{a:'ji'}/h";
+                var url = "<?php echo base_url()?>index.php/main_service/testCrossSite/{a:'ji'}/h";
                 var url1 = "http://localhost/k2/test.php?params={\"a\":\"aa\"}&callback=" + callback;
 
                 // [1] Create a script element.
