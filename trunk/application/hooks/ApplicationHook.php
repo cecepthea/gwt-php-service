@@ -17,7 +17,7 @@ class ApplicationHook {
  * @var string
  **/
     protected $CI;
-    protected $LOGIN_URI = "";
+    public static $LOGIN_URL = "";
 
     protected $controllerRequest;
     protected $controllerName = NULL;
@@ -32,8 +32,8 @@ class ApplicationHook {
         try {
             $this->CI =& get_instance();
             $this->beginRequest();
-            if($this->LOGIN_URI == "") {
-                $this->LOGIN_URI = base_url().'index.php?c=welcome&m=login&url_redirect=';
+            if(ApplicationHook::$LOGIN_URL == "") {
+                ApplicationHook::$LOGIN_URL = base_url().$this->CI->config->item('index_page').'?c=welcome&m=login&url_redirect=';
             }
         } catch (Exception $e) {
             echo "Page error:<br>";
@@ -63,12 +63,13 @@ class ApplicationHook {
             return  TRUE;
         }
 
-        $tokens = explode("/index.php/", current_url());
+        $index_page = $this->CI->config->item('index_page');
+        $tokens = explode("/".$index_page."/", current_url());
         if(sizeof($tokens)>=2 ) {
             $routeTokens =  explode("/", $tokens[1]);
 
             if(sizeof($routeTokens)>=2) {
-                $c = 0;                
+                $c = 0;
                 while(is_dir(ApplicationHook::$CONTROLLERS_FOLDER_PATH.$routeTokens[$c])) {
                     $c++;
                 }
@@ -82,9 +83,9 @@ class ApplicationHook {
                     $this->controllerMethod = "index";
                     $this->controllerRequest = $tokens[1];
                     return  TRUE;
-            }
+                }
         }
-        else if(strrpos(current_url(), "/index.php")>0) {
+        else if(strrpos(current_url(), "/".$index_page)>0) {
                 $this->controllerName = "home";
                 $this->controllerMethod = "index";
                 $this->controllerRequest = "";
@@ -119,21 +120,27 @@ class ApplicationHook {
 
                     $annotation = $reflection->getAnnotation('Secured');
                     //TODO
-                    redirect($this->LOGIN_URI .$this->controllerRequest);
+                    redirect($this->LOGIN_URL .$this->controllerRequest);
                 }
             }
         }
     }
 
     public function decoratePage() {
+
         if($this->isValidControllerRequest()) {
             $reflection =  $this->getReflectedController();
             if($reflection !=NULL ) {
                 if($reflection->hasAnnotation('Decorated')) {
+                    $this->CI->load->library('session');
 
-                    ApplicationHook::logInfo("-> Decorate page for ".$this->controllerName.".".$this->controllerMethod);
+                    ApplicationHook::logInfo("->Decorate page for ".$this->controllerName.".".$this->controllerMethod);
+                    
+                    if ( defined('LANGUAGE_INDEX_PAGE') ){
+                        $this->CI->config->set_item('index_page', LANGUAGE_INDEX_PAGE);
+                    }
 
-                    $this->CI->lang->load('fields','vietnamese');                    
+                    $this->CI->lang->load('fields','vietnamese');
 
                     $data = array(
                         'page_title' => $this->CI->page_decorator->getPageTitle(),
@@ -144,8 +151,9 @@ class ApplicationHook {
                         'page_footer' => $this->decorateFooter()
                     );
                     $data['controller'] = $this->controllerName."/".$this->controllerMethod;
-                    //test response time for benchmarking
                     $data['page_respone_time'] =  $this->endAndGetResponseTime();
+                    $data['session_id'] = $this->CI->session->userdata('session_id');
+
                     echo trim( $this->CI->load->view("decorator/page_template",$data,TRUE) );
                     return;
                 }
@@ -153,7 +161,7 @@ class ApplicationHook {
         }
         echo $this->CI->output->get_output();
         $this->CI->benchmark->mark('code_end');
-        echo "<br><b>Rendering time: ".$this->CI->benchmark->elapsed_time('code_start', 'code_end')."</b><br>";
+    //ApplicationHook::logInfo("Rendering time: ".$this->CI->benchmark->elapsed_time('code_start', 'code_end'));
     }
 
     protected function decorateHeader() {
