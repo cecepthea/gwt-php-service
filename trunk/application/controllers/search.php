@@ -46,7 +46,10 @@ class search extends Controller {
         $this->load->view("decorator/body",$data);
     }
 
-    /** @Decorated */
+    /**
+     * @Secured
+     * @Decorated
+     */
     public function test_decorator2() {
         $this->page_decorator->setPageMetaTag("description", "Home page");
         $this->page_decorator->setPageMetaTag("keywords", "Home page");
