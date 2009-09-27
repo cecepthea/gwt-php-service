@@ -110,50 +110,37 @@ class ApplicationHook {
         return $this->reflectedController;
     }
 
+    /**
+     * Check role of user, if no authentication, redirect to Login Page
+     *
+     */
     public function checkRole() {
         if($this->isValidControllerRequest() ) {
             $reflection = $this->getReflectedController();
             if($reflection !=NULL ) {
                 if($reflection->hasAnnotation('Secured') && $this->CI->redux_auth->logged_in() == FALSE) {
-
                     ApplicationHook::logInfo("-> CheckRole for ".$this->controllerName.".".$this->controllerMethod);
-
                     $annotation = $reflection->getAnnotation('Secured');
                     //TODO
-                    redirect($this->LOGIN_URL .$this->controllerRequest);
+                    redirect( ApplicationHook::$LOGIN_URL . $this->controllerRequest);
                 }
             }
         }
     }
 
+    /**
+     * Decorate the final view and response to client
+     *
+     */
     public function decoratePage() {
-
         if($this->isValidControllerRequest()) {
             $reflection =  $this->getReflectedController();
             if($reflection !=NULL ) {
                 if($reflection->hasAnnotation('Decorated')) {
-                    $this->CI->load->library('session');
-
                     ApplicationHook::logInfo("->Decorate page for ".$this->controllerName.".".$this->controllerMethod);
-                    
-                    if ( defined('LANGUAGE_INDEX_PAGE') ){
-                        $this->CI->config->set_item('index_page', LANGUAGE_INDEX_PAGE);
-                    }
 
-                    $this->CI->lang->load('fields','vietnamese');
-
-                    $data = array(
-                        'page_title' => $this->CI->page_decorator->getPageTitle(),
-                        'meta_tags' => $this->CI->page_decorator->getPageMetaTags(),
-                        'page_header' => $this->decorateHeader(),
-                        'left_navigation' => $this->decorateLeftNavigation(),
-                        'page_content' => $this->decoratePageContent(),
-                        'page_footer' => $this->decorateFooter()
-                    );
-                    $data['controller'] = $this->controllerName."/".$this->controllerMethod;
-                    $data['page_respone_time'] =  $this->endAndGetResponseTime();
-                    $data['session_id'] = $this->CI->session->userdata('session_id');
-
+                    $this->setSiteLanguage();
+                    $data = $this->processFinalViewData();
                     echo trim( $this->CI->load->view("decorator/page_template",$data,TRUE) );
                     return;
                 }
@@ -161,7 +148,42 @@ class ApplicationHook {
         }
         echo $this->CI->output->get_output();
         $this->CI->benchmark->mark('code_end');
-    //ApplicationHook::logInfo("Rendering time: ".$this->CI->benchmark->elapsed_time('code_start', 'code_end'));
+        //ApplicationHook::logInfo("Rendering time: ".$this->CI->benchmark->elapsed_time('code_start', 'code_end'));
+    }
+
+    /**
+     * Auto detect language for site base on the index file name
+     * The default is Vietnamese
+     */
+    protected function setSiteLanguage() {
+        $_lang = "vietnamese";
+        if ( defined('LANGUAGE_INDEX_PAGE') ) {
+            $this->CI->config->set_item('index_page', LANGUAGE_INDEX_PAGE);
+            if(LANGUAGE_INDEX_PAGE === "english.php") {
+                $_lang = "english";
+            }
+        }
+        $this->CI->lang->load('fields',$_lang);
+    }
+
+    /**
+     *
+     * @return array of data
+     */
+    protected function processFinalViewData() {
+        $this->CI->load->library('session');
+        $data = array(
+            'page_title' => $this->CI->page_decorator->getPageTitle(),
+            'meta_tags' => $this->CI->page_decorator->getPageMetaTags(),
+            'page_header' => $this->decorateHeader(),
+            'left_navigation' => $this->decorateLeftNavigation(),
+            'page_content' => $this->decoratePageContent(),
+            'page_footer' => $this->decorateFooter()
+        );
+        $data['controller'] = $this->controllerName."/".$this->controllerMethod;
+        $data['page_respone_time'] =  $this->endAndGetResponseTime();
+        $data['session_id'] = $this->CI->session->userdata('session_id');
+        return $data;
     }
 
     protected function decorateHeader() {
