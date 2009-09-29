@@ -67,18 +67,26 @@ class ApplicationHook {
         $tokens = explode("/".$index_page."/", current_url());
         if(sizeof($tokens)>=2 ) {
             $routeTokens =  explode("/", $tokens[1]);
-
-            if(sizeof($routeTokens)>=2) {
+            $routeTokensSize = sizeof($routeTokens);
+            if($routeTokensSize >= 2) {
                 $c = 0;
                 while(is_dir(ApplicationHook::$CONTROLLERS_FOLDER_PATH.$routeTokens[$c])) {
                     $c++;
                 }
                 $this->controllerName = $routeTokens[$c];
-                $this->controllerMethod = $routeTokens[$c+1];
+
+                $next_c = $c+1;
+                if($routeTokensSize === $next_c ) {
+                    $this->controllerMethod = "index";
+                }
+                else {
+                    $this->controllerMethod = $routeTokens[$next_c];
+                }
+                
                 $this->controllerRequest = $tokens[1];
                 return TRUE;
             }
-            else if(sizeof($routeTokens)===1 && strlen($routeTokens[0])>0 ) {
+            else if($routeTokensSize===1 && strlen($routeTokens[0])>0 ) {
                     $this->controllerName = $routeTokens[0];
                     $this->controllerMethod = "index";
                     $this->controllerRequest = $tokens[1];
