@@ -3,6 +3,7 @@
 require_once 'annotations/annotations.php';
 require_once 'annotations/Secured.php';
 require_once 'annotations/Decorated.php';
+require_once 'application/models/data_manager.php';
 
 /**
  * My hook for application, do check role and decorate page using Annotations
