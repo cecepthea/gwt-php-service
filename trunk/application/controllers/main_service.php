@@ -25,7 +25,7 @@ class Main_Service extends Controller {
         }
         else if(is_object($answer)) {
                 echo $callback."(".json_encode($answer).");";
-            }
+        }
     }
 
     public function handler() {
