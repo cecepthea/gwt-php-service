@@ -9,7 +9,7 @@
 </style>
 <script type="text/javascript" language="JavaScript">
     jQuery(document).ready(function(){
-        jQuery("#ProcessID").parent().hide();
+       // jQuery("#ProcessID").parent().hide();
     });
 </script>
 
@@ -20,7 +20,7 @@ echo form_fieldset('Process Information', $attributes);
 echo form_open(site_url("app_test/test_save_form"), '');
 
 renderInputField("ProcessID");
-renderSelectField("groups", "groups", $groups, "Group Owner");
+renderSelectField("GroupID", "groups", $groups, "Group Owner");
 renderInputField("ProcessName");
 echo form_submit('mysubmit', 'Submit Post!');
 echo form_button("cancel", "Cencal", 'onclick="history.back();"');

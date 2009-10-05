@@ -2,6 +2,7 @@
 require_once 'application/classes/Process.php';
 
 /**
+ * @property class_mapper $class_mapper
  * @property CI_Loader $load
  * @property CI_DB_active_record $db
  */
@@ -11,7 +12,7 @@ class process_manager extends data_manager {
         parent::__construct();
     }
 
-    public function get_dependency_instances(){
+    public function get_dependency_instances() {
         $list = array();
         $this->db->select("id, name, description");
         $this->db->from("groups");
@@ -28,18 +29,25 @@ class process_manager extends data_manager {
     }
 
     public function save($process) {
+        $data_array = $this->class_mapper->classToArray("Process", $process);
         if($process->getProcessID() > 0) {
-            $this->update($process);
+            $this->update($data_array);
         }
         else {
-            $this->insert($process);
+            $this->insert($data_array);
         }
     }
 
-    protected function insert($process) {
+    protected function insert($data_array) {
+        $this->db->insert("Processes", $data_array);
     }
 
-    protected function update($process) {
+    protected function update($data_array) {
+        $key_field_name = "ProcessID";
+        $id = $data_array[$key_field_name];
+        unset($data_array[$key_field_name]);
+        $this->db->where($key_field_name, $id);
+        $this->db->update('Processes', $data_array);
     }
 
     /**
