@@ -3,13 +3,28 @@ require_once 'application/classes/Process.php';
 
 /**
  * @property CI_Loader $load
- * @property CI_Input $input
  * @property CI_DB_active_record $db
  */
 class process_manager extends data_manager {
 
     public function __construct() {
         parent::__construct();
+    }
+
+    public function get_dependency_instances(){
+        $list = array();
+        $this->db->select("id, name, description");
+        $this->db->from("groups");
+        $query = $this->db->get();
+        $groups = array();
+        foreach ($query->result_array() as $row) {
+            $groups[$row["id"]] = $row["name"]." - ".$row["description"];
+        }
+
+        $list["groups"] = $groups;
+
+        return $list;
+
     }
 
     public function save($process) {

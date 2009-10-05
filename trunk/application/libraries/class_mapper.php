@@ -1,7 +1,7 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * class_mapper for database
+ * class_mapper for data manager
  * @author Trieu Nguyen (tantrieuf31@gmail.com)
  */
 class class_mapper {
@@ -66,13 +66,13 @@ class class_mapper {
         return $property_values;
     }
 
-    public function DataListToDataTable($class_name, $list){
+    public function DataListToDataTable($class_name, $list) {
         $data_table = array();
         $idx = 0;
         foreach ($list as $obj) {
-           $data_table[$idx++] = $this->classToArray($class_name, $obj) ;
+            $data_table[$idx++] = $this->classToArray($class_name, $obj) ;
         }
-       return $data_table;
+        return $data_table;
     }
 
     public function isSetterMethod($method) {
