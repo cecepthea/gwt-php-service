@@ -33,10 +33,7 @@ class app_test extends Controller {
     }
 
 
-    /** @Decorated */
-    public function test_form() {
-        $this->load->view("form/simple_form",null);
-    }
+
 
     /** @Decorated */
     public function test_decorator() {
@@ -65,7 +62,20 @@ class app_test extends Controller {
         $this->load->view("decorator/body",$data);
     }
 
+    /** @Decorated */
+    public function test_form() {
+        $this->load->model("process_manager");
+        $data = $this->process_manager->get_dependency_instances();
+        $this->load->view("form/form_view",$data);
+    }
 
+    /** @Decorated */
+    public function test_save_form() {
+        ApplicationHook::logInfo($this->input->post("ProcessName"));
+        $this->load->model("process_manager");
+        $data = $this->process_manager->get_dependency_instances();
+        $this->load->view("form/form_view",$data);
+    }
 
     public function test_data_manager($id = "all") {
         app_test::BEGIN_TEST();
@@ -74,7 +84,7 @@ class app_test extends Controller {
 
         $this->load->model("process_manager");
         $filter = array();
-        if(is_numeric($id)){
+        if(is_numeric($id)) {
             $filter = array("ProcessID"=>$id);
         }
         $processses = $this->process_manager->find_by_filter($filter);
@@ -100,7 +110,7 @@ class app_test extends Controller {
             'row_alt_end'         => '</tr>',
             'cell_alt_start'      => '<td>',
             'cell_alt_end'        => '</td>',
-            
+
             'table_close'         => '</table>'
         );
 
