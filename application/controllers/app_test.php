@@ -71,10 +71,14 @@ class app_test extends Controller {
 
     /** @Decorated */
     public function test_save_form() {
-        ApplicationHook::logInfo($this->input->post("ProcessName"));
+        $pro = new Process();
+        $pro->setProcessID($this->input->post("ProcessID"));
+        $pro->setGroupID($this->input->post("GroupID"));
+        $pro->setProcessName($this->input->post("ProcessName"));
+
         $this->load->model("process_manager");
-        $data = $this->process_manager->get_dependency_instances();
-        $this->load->view("form/form_view",$data);
+        $this->process_manager->save($pro);
+        //echo "OK";
     }
 
     public function test_data_manager($id = "all") {
