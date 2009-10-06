@@ -17,9 +17,22 @@ class admin_panel extends Controller {
      * @Decorated
      */
     public function index() {
-        $data = array();
-        $this->load->view("decorator/body",$data);
+        $data = "Admin panel";
+        $this->output->set_output($data);
+    //    $this->load->view("admin/left_menu_bar",NULL);
+
     }
+
+      /**
+     * @Decorated
+     */
+    public function add_new_process() {
+        $data = "add_new_process";
+        $this->output->set_output($data);
+    }
+
+
+
 
     /**
      * EndsWith

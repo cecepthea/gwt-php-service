@@ -172,6 +172,9 @@ class ApplicationHook {
                 $_lang = "english";
             }
         }
+        else {
+            define('LANGUAGE_INDEX_PAGE', 'tiengviet.php');
+        }
         $this->CI->lang->load('fields',$_lang);
     }
 
@@ -200,6 +203,11 @@ class ApplicationHook {
     }
 
     protected function decorateLeftNavigation() {
+        //TODO check is admin role here
+        if($this->controllerName == "admin_panel" && TRUE) {
+            return trim( $this->CI->load->view("admin/left_menu_bar",NULL,TRUE) );
+        }
+
         $data = array(
             'is_login' => $this->CI->redux_auth->logged_in()
         );

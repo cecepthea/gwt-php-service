@@ -1,7 +1,7 @@
  <?php if($is_login == FALSE) { ?>
      <?php echo validation_errors(); ?>
      <?php echo form_open('welcome/login'); ?>
-<table>
+<table style="width:255px!important;">
     <tbody>
         <tr>
             <td>Email</td>
