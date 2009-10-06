@@ -10,6 +10,8 @@
         <title><?php echo $page_title; ?></title>
         <base href="<?php echo base_url()?>" />
 
+        <link type="text/css" rel="stylesheet" href="<?= base_url() ?>assets/css/style-general.css"/>
+        <link type="text/css" rel="stylesheet" href="<?= base_url() ?>assets/css/hope-general.css"/>
         <style type="text/css" media="screen">
             #container
             {
@@ -43,7 +45,7 @@
 
             #content
             {
-                margin-left: 262px;
+                margin-left: 300px;
                 border-left: 1px solid gray;
                 padding: 1em;
                 max-width: 36em;
