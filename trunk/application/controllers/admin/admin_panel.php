@@ -71,10 +71,51 @@ class admin_panel extends Controller {
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $this->load->view("global_view/data_grid",$data);
     }
+	
+	/**
+     * @Decorated
+     */
+    public function list_forms($id = "all") {
+        $this->load->model("process_manager");
+        $this->load->library('table');
+        $filter = array();
+        if(is_numeric($id)) {
+            $filter = array("ProcessID"=>$id);
+        }
+        $processses = $this->process_manager->find_by_filter($filter);
+        $data_table = $this->class_mapper->DataListToDataTable("Process",$processses);
+
+        $data["table_name"] = "Processes";
+        $data["data_table"] = $data_table;
+        $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName');
+        $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
+        $this->load->view("global_view/data_grid",$data);
+    }
+	
+	/**
+     * @Decorated
+     */
+    public function list_fields($id = "all") {
+        $this->load->model("process_manager");
+        $this->load->library('table');
+        $filter = array();
+        if(is_numeric($id)) {
+            $filter = array("ProcessID"=>$id);
+        }
+        $processses = $this->process_manager->find_by_filter($filter);
+        $data_table = $this->class_mapper->DataListToDataTable("Process",$processses);
+
+        $data["table_name"] = "Processes";
+        $data["data_table"] = $data_table;
+        $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName');
+        $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
+        $this->load->view("global_view/data_grid",$data);
+    }
 
     public function save_data_table_cell() {
         $editable_field_name = ($this->input->post("editable_field_name"));
         $tokens = explode("-", $editable_field_name);
+		
         $table = $tokens[0] ;
         $id = $tokens[1];
         $primary_key_field = Process::$PRIMARY_KEY_FIELDS;
