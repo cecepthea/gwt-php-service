@@ -17,7 +17,7 @@
 
 $attributes = array('id' => 'process_info', 'class' => 'input_info');
 echo form_fieldset('Process Information', $attributes);
-echo form_open(site_url("app_test/test_save_form"), '');
+echo form_open(site_url($action_uri), '');
 
 renderInputField("ProcessID");
 renderSelectField("GroupID", "groups", $groups, "Group Owner");
