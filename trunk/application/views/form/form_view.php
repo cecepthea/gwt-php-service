@@ -7,11 +7,6 @@
         margin-bottom:5px;
     }
 </style>
-<script type="text/javascript" language="JavaScript">
-    jQuery(document).ready(function(){
-       // jQuery("#ProcessID").parent().hide();
-    });
-</script>
 
 <?php
 
@@ -79,3 +74,11 @@ function renderInputField($input_name,$input_id = "" , $input_value = "", $label
 }
 
 ?>
+
+
+
+<script type="text/javascript" language="JavaScript">
+    jQuery(document).ready(function(){
+        // jQuery("#ProcessID").parent().hide();
+    });
+</script>

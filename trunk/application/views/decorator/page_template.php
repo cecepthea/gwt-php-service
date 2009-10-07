@@ -68,7 +68,7 @@
         <!--
         <script type="text/javascript" charset="utf-8" src="http://www.google.com/jsapi"></script>
          -->
-        <script language="JavaScript" src="<?php echo base_url()?>assets/js/jquery/jquery.js"></script>
+        <script language="JavaScript" src="<?= base_url()?>assets/js/jquery/jquery.js"></script>
         <script type="text/javascript" charset="utf-8">
             // Load jQuery
            // google.load("jquery", "1");
