@@ -56,9 +56,9 @@ echo $this->table->generate($data_table);
         jQuery(node).editable("<?php echo site_url($edit_in_place_uri); ?>", {
             type      : 'textarea',
             cancel    : 'Cancel',
-            submit    : 'OK',
-            indicator : '<img src="img/indicator.gif" alt="Saving...">',
-            tooltip   : 'Click to edit...',
+            submit    : 'Save',
+            indicator : "<span style='color:red;font-weight:bold;'>Saving...</span>",
+            tooltip   : 'Click to edit',
             id   : 'editable_field_name',
             name : 'editable_field_value'
         });

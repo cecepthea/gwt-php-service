@@ -56,9 +56,12 @@ class class_mapper {
             $methods = $this->objectClass->getMethods();
             $properties = $this->objectClass->getProperties();
             foreach ($properties as $property) {
-                $getter = $this->objectClass->getMethod('get'.strtoupper($property->getName()));
-                $value = $getter->invoke($obj);
-                $property_values[$property->getName()] = $value;
+				if($property->isPrivate() || $property->isProtected()){
+					$getter = $this->objectClass->getMethod('get'.($property->getName()));
+					//ApplicationHook::log('get'.strtoupper($property->getName()));
+					$value = $getter->invoke($obj);
+					$property_values[$property->getName()] = $value;
+				}
             }
         } catch (Exception $e) {
             echo $e->getTraceAsString();
