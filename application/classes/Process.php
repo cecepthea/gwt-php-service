@@ -1,6 +1,9 @@
 <?php
 
 class Process {
+    public static $PRIMARY_KEY_FIELDS = "ProcessID";
+    public static $DATABASE_TABLE = "Processes";
+    public static $RELATIONS = array("Processes.GroupID => groups.id | groups.name");
 
     private $ProcessID = -1;
     private $GroupID = -1;

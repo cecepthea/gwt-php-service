@@ -6,6 +6,9 @@ require_once "application/classes/Process.php";
  * Description of admin_panel
  *
  * @property page_decorator $page_decorator
+ * @property class_mapper $class_mapper
+ * @property CI_Loader $load
+ * @property CI_DB_active_record $db
  *
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
@@ -54,6 +57,7 @@ class admin_panel extends Controller {
      */
     public function list_processes($id = "all") {
         $this->load->model("process_manager");
+        $this->load->library('table');
         $filter = array();
         if(is_numeric($id)) {
             $filter = array("ProcessID"=>$id);
@@ -61,18 +65,31 @@ class admin_panel extends Controller {
         $processses = $this->process_manager->find_by_filter($filter);
         $data_table = $this->class_mapper->DataListToDataTable("Process",$processses);
 
-
-        //echo $pro->getProcessName()." == ";
-        $this->load->library('table');
-
-
-        $this->table->set_template($this->table_template);
-        $this->table->set_heading(array('ProcessID', 'GroupID', 'ProcessName'));
-        $view =  $this->table->generate($data_table);
-
-        $this->output->set_output($view);
+        $data["table_name"] = "Processes";
+        $data["data_table"] = $data_table;
+        $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName');
+        $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
+        $this->load->view("global_view/data_grid",$data);
     }
 
+    public function save_data_table_cell() {
+        $editable_field_name = ($this->input->post("editable_field_name"));
+        $tokens = explode("-", $editable_field_name);
+        $table = $tokens[0] ;
+        $id = $tokens[1];
+        $primary_key_field = Process::$PRIMARY_KEY_FIELDS;
+        if($primary_key_field == $tokens[2] ) {
+            return $this->input->post("editable_field_value");
+        }
+
+        $data = array(
+            $tokens[2] => $this->input->post("editable_field_value")
+        );
+        $this->db->where($primary_key_field, $id);
+        $this->db->update($table, $data);
+        
+        echo $this->input->post("editable_field_value");
+    }
 
 
 
@@ -89,25 +106,5 @@ class admin_panel extends Controller {
         return strrpos($Haystack, $Needle) === strlen($Haystack)-strlen($Needle);
     }
 
-    protected $table_template = array (
-    'table_open'          => '<table border="1" cellpadding="4" cellspacing="0">',
-
-    'heading_row_start'   => '<tr>',
-    'heading_row_end'     => '</tr>',
-    'heading_cell_start'  => '<th>',
-    'heading_cell_end'    => '</th>',
-
-    'row_start'           => '<tr>',
-    'row_end'             => '</tr>',
-    'cell_start'          => '<td>',
-    'cell_end'            => '</td>',
-
-    'row_alt_start'       => '<tr>',
-    'row_alt_end'         => '</tr>',
-    'cell_alt_start'      => '<td>',
-    'cell_alt_end'        => '</td>',
-
-    'table_close'         => '</table>'
-    );
 }
 ?>
